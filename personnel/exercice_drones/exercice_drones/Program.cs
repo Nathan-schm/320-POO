@@ -13,36 +13,24 @@ namespace exercice_drones
 
         static void Main(string[] args)
         {
-            string deadDrone = "-----";
-            int batt = 50;
-            int posx = 0;
-            int posy = 10;
+            Console.Clear();
+            Console.CursorVisible = false;
 
-            while (batt > 0)
+            Drone drone1 = new Drone(2, 5, 50);
+            Drone drone2 = new Drone(2, 10, 80);
+
+            while (drone1._battery > 0 || drone2._battery > 0)
             {
                 Console.Clear();
-                Drone(posx, posy);
-                posx  ++;
-                batt--;
+                drone1.Changestate();
+                drone1.Draw();
+
+                drone2.Changestate();
+                drone2.Draw();
+
                 Thread.Sleep(100);
             }
-
-            if (batt == 0)
-            {
-                Console.Clear();
-                Console.SetCursorPosition(posx, posy);
-                Console.Write(deadDrone);
-            }
-
             Console.Read();
         }
-        
-        static void Drone(int posx,int posy)
-        {
-            string drone = "X-O-X";
-            Console.SetCursorPosition(posx, posy);
-            Console.Write(drone);
-        }
-        
     }
 }
