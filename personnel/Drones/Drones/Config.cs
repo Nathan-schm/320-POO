@@ -4,6 +4,7 @@ namespace Drones
     internal static class Config
     {
         public const int MAX_LOAD = 1000;                 // Charge maximum de la batterie d'un drone
+        public const int MIN_LOAD = 400;
 
         public const int AIRSPACE_WIDTH = 1600;            // Dimensions de l'espace aérien
         public const int AIRSPACE_HEIGHT = 800;

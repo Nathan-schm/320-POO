@@ -13,7 +13,7 @@ namespace Drones
 
         private BufferedGraphicsContext _currentContext;
         private BufferedGraphics _airspace;
-        private Charger _borne = new Charger(Config.AIRSPACE_WIDTH / 3, Config.AIRSPACE_HEIGHT / 1);
+        private Charger _borne = new Charger(Config.AIRSPACE_WIDTH / 2, Config.AIRSPACE_HEIGHT / 2);
 
         // Initialisation de l'espace a�rien avec un certain nombre de drones
         public AirSpace(List<Drone> fleet)
@@ -49,7 +49,7 @@ namespace Drones
         {
             foreach (Drone drone in _fleet)
             {
-                drone.Update(interval);
+                drone.Update(interval, _borne);
             }
         }
 

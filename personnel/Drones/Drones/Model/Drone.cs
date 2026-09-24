@@ -1,4 +1,5 @@
 ﻿using Drones.Helpers;
+using Drones.Model;
 using Drones.Properties;
 
 namespace Drones
@@ -35,16 +36,35 @@ namespace Drones
 
         // Cette méthode calcule le nouvel état dans lequel le drone se trouve après
         // que 'interval' millisecondes se sont écoulées
-        public void Update(int interval)
+        public void Update(int interval, Charger charger)
         {
-            if (_charge <= 0) return;                     // S'il n'a plus de charge, il ne peut plus bouger
+            if (_state == State.LOADING)
+            {
+                _charge += 10;
+                if (_charge >= Config.MAX_LOAD)
+                {
+                    _state = State.ROAMING;
+                    _targetX = RandomHelpers.Next(Config.AIRSPACE_WIDTH);
+                    _targetY = RandomHelpers.Next(Config.AIRSPACE_HEIGHT);
+                }
+            }
 
-            _state = State.ROAMING;
+            if (_charge <= Config.MIN_LOAD)
+            {
+                _state = State.LOW_BATTERY;
+                _targetX = charger.GetX();
+                _targetY = charger.GetY();
+            }
 
             double distance = MathHelpers.Distance(_x, _y, _targetX, _targetY);
 
+            if (_state == State.LOW_BATTERY && distance <= Config.SPEED * interval / 1000)
+            {
+                _state = State.LOADING;
+            }
+
             if (distance <= Config.SPEED * interval / 1000)                 // L'objectif est atteint (ou tout proche)
-            {            
+            {
                 _x = _targetX;
                 _y = _targetY;
                 return;                                   // Le drone s'immobilise
@@ -53,9 +73,11 @@ namespace Drones
             // Déplacement le long du vecteur unitaire vers l'objectif, à la vitesse du drone
             double dx = _targetX - _x;
             double dy = _targetY - _y;
-            _x += (int)(dx / distance * Config.SPEED * interval/1000);
-            _y += (int)(dy / distance * Config.SPEED * interval/1000);
-            _charge--;                                    // Il a dépensé de l'énergie
+            _x += (int)(dx / distance * Config.SPEED * interval / 1000);
+            _y += (int)(dy / distance * Config.SPEED * interval / 1000);
+            _charge-=3;                                    // Il a dépensé de l'énergie
+
+
         }
 
         #endregion
@@ -68,8 +90,8 @@ namespace Drones
         // De manière graphique
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(_charge > 0 ? Resources.drone : Resources.boom, _x-SIZE/2, _y-SIZE/2, SIZE, SIZE);
-            drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, _x-SIZE/2, _y-SIZE);
+            drawingSpace.Graphics.DrawImage(_charge > 0 ? Resources.drone : Resources.boom, _x - SIZE / 2, _y - SIZE / 2, SIZE, SIZE);
+            drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, _x - SIZE / 2, _y - SIZE);
         }
 
         // De manière textuelle

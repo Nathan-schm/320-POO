@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Drones.Model
 {
-    internal class Charger
+    public partial class Charger
     {
         private int _x;
         private int _y;
@@ -21,19 +21,26 @@ namespace Drones.Model
             _y = y;
         }
 
+        public int GetX()
+        {
+            return _x;
+        }
+        public int GetY()
+        {
+            return _y;
+        }
+
         public void Render(BufferedGraphics drawingSpace)
         {
             // Create pen.
             Pen blackPen = new Pen(Color.Black, 3);
 
             // Create location and size of ellipse.
-            _x = 0;
-            _y = 0;
-            int width = 20;
-            int height = 20;
+            int width = 100;
+            int height = 100;
 
             // Draw ellipse to screen.
-            drawingSpace.Graphics.DrawEllipse(blackPen, _x, _y, width, height);
+            drawingSpace.Graphics.DrawEllipse(blackPen, _x -50, _y -50, width, height);
         }
     }
 }
