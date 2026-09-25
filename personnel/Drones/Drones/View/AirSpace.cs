@@ -1,3 +1,4 @@
+using Drones.Helpers;
 using Drones.Model;
 
 namespace Drones
@@ -10,13 +11,16 @@ namespace Drones
     {
         // La flotte est l'ensemble des drones qui �voluent dans notre espace a�rien
         private List<Drone> _fleet;
+        private List<Pizzeria> _restaurants;
+        private List<Clients> _personne;
 
         private BufferedGraphicsContext _currentContext;
         private BufferedGraphics _airspace;
         private Charger _borne = new Charger(Config.AIRSPACE_WIDTH / 2, Config.AIRSPACE_HEIGHT / 2);
 
+
         // Initialisation de l'espace a�rien avec un certain nombre de drones
-        public AirSpace(List<Drone> fleet)
+        public AirSpace(List<Drone> fleet, List<Pizzeria> restaurants, List<Clients> personne)
         {
             InitializeComponent();
             this.ClientSize = new Size(Config.AIRSPACE_WIDTH, Config.AIRSPACE_HEIGHT);
@@ -26,6 +30,8 @@ namespace Drones
             // dimensions the same size as the drawing surface of the form.
             _airspace = _currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
             _fleet = fleet;
+            _restaurants = restaurants;
+            _personne = personne;
             
         }
 
@@ -38,6 +44,16 @@ namespace Drones
             foreach (Drone drone in _fleet)
             {
                 drone.Render(_airspace);
+            }
+
+            foreach (Pizzeria restaurant in _restaurants)
+            {
+                restaurant.Render(_airspace);
+            }
+
+            foreach (Clients clients in _personne)
+            {
+                clients.Render(_airspace);
             }
 
             _borne.Render(_airspace);

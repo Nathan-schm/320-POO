@@ -38,44 +38,47 @@ namespace Drones
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval, Charger charger)
         {
-            if (_state == State.LOADING)
+            if (_state == State.LOADING) //En mode LOADING
             {
-                _charge += 10;
-                if (_charge >= Config.MAX_LOAD)
+                _charge += 10; //charge sa batterie 10 fois plus vite 
+                if (_charge >= Config.MAX_LOAD) //Batterie pleine il se met en Mode ROAMING
                 {
                     _state = State.ROAMING;
+                    //Cherche un nouvel objectif
                     _targetX = RandomHelpers.Next(Config.AIRSPACE_WIDTH);
                     _targetY = RandomHelpers.Next(Config.AIRSPACE_HEIGHT);
                 }
             }
 
-            if (_charge <= Config.MIN_LOAD)
+            if (_charge <= Config.MIN_LOAD) //si il est en dessous de 40% il se met en mode LOW_BATTERY
             {
                 _state = State.LOW_BATTERY;
+                //trouve la position de la borne de charge et devient son nouvel objectif
                 _targetX = charger.GetX();
                 _targetY = charger.GetY();
             }
 
             double distance = MathHelpers.Distance(_x, _y, _targetX, _targetY);
 
-            if (_state == State.LOW_BATTERY && distance <= Config.SPEED * interval / 1000)
+            if (_state == State.LOW_BATTERY && distance <= Config.SPEED * interval / 1000) //L'objectif est atteint et que il est en mode LOW_BATTERY
             {
-                _state = State.LOADING;
+                _state = State.LOADING; //Change de mode et se met en Mode LOADING
             }
 
-            if (distance <= Config.SPEED * interval / 1000)                 // L'objectif est atteint (ou tout proche)
+            if ( distance <= Config.SPEED * interval / 1000)                 // L'objectif est atteint (ou tout proche)
             {
                 _x = _targetX;
                 _y = _targetY;
-                return;                                   // Le drone s'immobilise
+                return;
             }
+
 
             // Déplacement le long du vecteur unitaire vers l'objectif, à la vitesse du drone
             double dx = _targetX - _x;
             double dy = _targetY - _y;
             _x += (int)(dx / distance * Config.SPEED * interval / 1000);
             _y += (int)(dy / distance * Config.SPEED * interval / 1000);
-            _charge-=3;                                    // Il a dépensé de l'énergie
+            _charge-=2;                                    // Il a dépensé de l'énergie
 
 
         }

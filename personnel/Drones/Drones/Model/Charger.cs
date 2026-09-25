@@ -36,11 +36,11 @@ namespace Drones.Model
             Pen blackPen = new Pen(Color.Black, 3);
 
             // Create location and size of ellipse.
-            int width = 100;
-            int height = 100;
+            int width = 20;
+            int height = 20;
 
             // Draw ellipse to screen.
-            drawingSpace.Graphics.DrawEllipse(blackPen, _x -50, _y -50, width, height);
+            drawingSpace.Graphics.DrawEllipse(blackPen, _x -(width /2) , _y -(height/2), width, height);
         }
     }
 }
