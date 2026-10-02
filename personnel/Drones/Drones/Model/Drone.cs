@@ -72,7 +72,6 @@ namespace Drones
                 return;
             }
 
-
             // Déplacement le long du vecteur unitaire vers l'objectif, à la vitesse du drone
             double dx = _targetX - _x;
             double dy = _targetY - _y;
