@@ -1,0 +1,23 @@
+aide test
+
+si c'est une propriété c'est un get ou un set, donc on doit mettre { get; } ou { set; } ou même { get; set; }
+
+en majuscule c'est généralement une propriété
+et c'est quasi toujours en public
+en minuscule ça sera un attribut
+
+il faut savoir faire un cast
+
+
+pour les tests il faut aller dans notre solution de projet, en l'occurrence ici c'est drones.
+On fait un clic droit dessus, on fait ajouter puis on sélectionne MStest chepa quoi
+une fois le fichier de test créer
+on fait ajouter
+nouvelle référence de projet, on sélectionne drone, ou le projet sur lequel on travaille
+une fois ceci fait, on peut avoir une erreur
+pour enlever cette erreur on fait clic droit sur le drones, et on vas tout en bas et on met propriété
+et la dans SE cible on met Windows
+ensuite dans le fichier de test on peut commencer à faire notre 
+arrange 
+act 
+assert
